@@ -70,14 +70,21 @@ type IntruderInput
   sensitivity_index::Uint8
   protection_mode::Uint8
 end
+#IntruderInput() = IntruderInput(false, uint32(0), uint32(0), 0.0, 0.0, 0.0, uint8(0), uint8(0), uint8(0),
+#                                EQUIPAGE_TCAS, uint8(0), uint8(0), uint8(0))
+
+#IntruderInput() = IntruderInput(false, uint32(0), uint32(0), 0.0, 0.0, 0.0, uint8(0), uint8(0), uint8(0),
+#                                p.encounter_equipage == :EvE ? EQUIPAGE_TCAS:EQUIPAGE_MODES, uint8(0), uint8(0), uint8(0))
+
 IntruderInput() = IntruderInput(false, uint32(0), uint32(0), 0.0, 0.0, 0.0, uint8(0), uint8(0), uint8(0),
-                                EQUIPAGE_TCAS, uint8(0), uint8(0), uint8(0))
+                                EQUIPAGE_MODES, uint8(0), uint8(0), uint8(0))
 
 type Input
   ownInput::OwnInput
   intruders::Vector{IntruderInput}
+  step::Int
 end
-Input(nintruders::Int) = Input(OwnInput(), IntruderInput[IntruderInput() for i = 1:nintruders])
+Input(nintruders::Int) = Input(OwnInput(), IntruderInput[IntruderInput() for i = 1:nintruders], int(1))
 
 type IntruderOutput
   id::Uint32
@@ -127,7 +134,8 @@ function reset!(iinput::IntruderInput)
   iinput.cvc          = uint8(0)
   iinput.vrc          = uint8(0)
   iinput.vsb          = uint8(0)
-  iinput.equipage     = EQUIPAGE_TCAS
+  #iinput.equipage     = EQUIPAGE_TCAS
+  iinput.equipage     = EQUIPAGE_MODES
   iinput.quant        = uint8(0)
   iinput.sensitivity_index = uint8(0)
   iinput.protection_mode   = uint8(0)
@@ -139,6 +147,8 @@ function reset!(input::Input)
   for i = 1:endof(input.intruders)
     reset!(input.intruders[i])
   end
+
+  input.step = 1
 end
 
 function reset!(iout::IntruderOutput)
