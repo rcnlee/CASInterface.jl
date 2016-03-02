@@ -51,27 +51,27 @@ type OwnInput
   z::Float64
   psi::Float64
   h::Float64
-  modes::Uint32
+  modes::UInt32
 end
-OwnInput() = OwnInput(0.0, 0.0, 0.0, 0.0, uint32(0))
+OwnInput() = OwnInput(0.0, 0.0, 0.0, 0.0, UInt32(0))
 
 type IntruderInput
   valid::Bool
-  id::Uint32
-  modes::Uint32
+  id::UInt32
+  modes::UInt32
   sr::Float64
   chi::Float64
   z::Float64
-  cvc::Uint8
-  vrc::Uint8
-  vsb::Uint8
+  cvc::UInt8
+  vrc::UInt8
+  vsb::UInt8
   equipage::EQUIPAGE
-  quant::Uint8
-  sensitivity_index::Uint8
-  protection_mode::Uint8
+  quant::UInt8
+  sensitivity_index::UInt8
+  protection_mode::UInt8
 end
-IntruderInput() = IntruderInput(false, uint32(0), uint32(0), 0.0, 0.0, 0.0, uint8(0), uint8(0), uint8(0),
-                                EQUIPAGE_TCAS, uint8(0), uint8(0), uint8(0))
+IntruderInput() = IntruderInput(false, UInt32(0), UInt32(0), 0.0, 0.0, 0.0, UInt8(0), UInt8(0), UInt8(0),
+                                EQUIPAGE_TCAS, UInt8(0), UInt8(0), UInt8(0))
 
 type Input
   ownInput::OwnInput
@@ -80,20 +80,20 @@ end
 Input(nintruders::Int) = Input(OwnInput(), IntruderInput[IntruderInput() for i = 1:nintruders])
 
 type IntruderOutput
-  id::Uint32
-  cvc::Uint8
-  vrc::Uint8
-  vsb::Uint8
+  id::UInt32
+  cvc::UInt8
+  vrc::UInt8
+  vsb::UInt8
   tds::Float64
-  code::Uint8
+  code::UInt8
 end
-IntruderOutput() = IntruderOutput(uint32(0), uint8(0), uint8(0), uint8(0), 0., uint8(0))
+IntruderOutput() = IntruderOutput(UInt32(0), UInt8(0), UInt8(0), UInt8(0), 0., UInt8(0))
 
 type Output
-  cc::Uint8
-  vc::Uint8
-  ua::Uint8
-  da::Uint8
+  cc::UInt8
+  vc::UInt8
+  ua::UInt8
+  da::UInt8
   target_rate::Float64
   turn_off_aurals::Bool
   crossing::Bool
@@ -101,12 +101,12 @@ type Output
   alert::Bool
   dh_min::Float64
   dh_max::Float64
-  sensitivity_index::Uint8
+  sensitivity_index::UInt8
   ddh::Float64
   intruders::Vector{IntruderOutput}
 end
-Output(nintruders::Int) = Output(uint8(0), uint8(0), uint8(0), uint8(0), 0.0, false, false, false, false,
-                                 -9999.0, 9999.0, uint8(0), 0.0,
+Output(nintruders::Int) = Output(UInt8(0), UInt8(0), UInt8(0), UInt8(0), 0.0, false, false, false, false,
+                                 -9999.0, 9999.0, UInt8(0), 0.0,
                                  IntruderOutput[IntruderOutput() for i = 1:nintruders])
 
 function reset!(ownInput::OwnInput)
@@ -114,23 +114,23 @@ function reset!(ownInput::OwnInput)
   ownInput.z = 0.0
   ownInput.psi = 0.0
   ownInput.h = 0.0
-  ownInput.modes = uint32(0)
+  ownInput.modes = UInt32(0)
 end
 
 function reset!(iinput::IntruderInput)
   iinput.valid        = false
-  iinput.id           = uint32(0)
-  iinput.modes        = uint32(0)
+  iinput.id           = UInt32(0)
+  iinput.modes        = UInt32(0)
   iinput.sr           = 0.0
   iinput.chi          = 0.0
   iinput.z            = 0.0
-  iinput.cvc          = uint8(0)
-  iinput.vrc          = uint8(0)
-  iinput.vsb          = uint8(0)
+  iinput.cvc          = UInt8(0)
+  iinput.vrc          = UInt8(0)
+  iinput.vsb          = UInt8(0)
   iinput.equipage     = EQUIPAGE_TCAS
-  iinput.quant        = uint8(0)
-  iinput.sensitivity_index = uint8(0)
-  iinput.protection_mode   = uint8(0)
+  iinput.quant        = UInt8(0)
+  iinput.sensitivity_index = UInt8(0)
+  iinput.protection_mode   = UInt8(0)
 end
 
 function reset!(input::Input)
@@ -142,21 +142,21 @@ function reset!(input::Input)
 end
 
 function reset!(iout::IntruderOutput)
-  iout.id = uint32(0)
-  iout.cvc = uint8(0)
-  iout.vrc = uint8(0)
-  iout.vsb = uint8(0)
+  iout.id = UInt32(0)
+  iout.cvc = UInt8(0)
+  iout.vrc = UInt8(0)
+  iout.vsb = UInt8(0)
   iout.tds = 0.0
-  iout.code = uint8(0)
+  iout.code = UInt8(0)
 
   return
 end
 
 function reset!(out::Output)
-  out.cc = uint8(0)
-  out.vc = uint8(0)
-  out.ua = uint8(0)
-  out.da = uint8(0)
+  out.cc = UInt8(0)
+  out.vc = UInt8(0)
+  out.ua = UInt8(0)
+  out.da = UInt8(0)
   out.target_rate = 0.0
   out.turn_off_aurals = false
   out.crossing = false
@@ -164,7 +164,7 @@ function reset!(out::Output)
   out.alert = false
   out.dh_min = -9999.0
   out.dh_max = 9999.0
-  out.sensitivity_index = uint8(0)
+  out.sensitivity_index = UInt8(0)
   out.ddh = 0.0
 
   for i = 1:endof(out.intruders)
